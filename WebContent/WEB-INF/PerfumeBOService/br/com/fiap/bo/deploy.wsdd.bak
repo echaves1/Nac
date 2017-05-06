@@ -1,0 +1,106 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from PerfumeBOService WSDL service -->
+
+  <service name="PerfumeBO" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://bo.fiap.com.br"/>
+      <parameter name="wsdlServiceElement" value="PerfumeBOService"/>
+      <parameter name="schemaQualified" value="http://bo.fiap.com.br,http://exception.fiap.com.br,http://entity.fiap.com.br"/>
+      <parameter name="wsdlServicePort" value="PerfumeBO"/>
+      <parameter name="className" value="br.com.fiap.bo.PerfumeBOSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="PerfumeBO"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="listar" qname="operNS:listar" xmlns:operNS="http://bo.fiap.com.br" returnQName="retNS:listarReturn" xmlns:retNS="http://bo.fiap.com.br" returnType="rtns:ArrayOf_xsd_anyType" xmlns:rtns="http://bo.fiap.com.br" returnItemQName="tns:item" xmlns:tns="http://bo.fiap.com.br" soapAction="" >
+      </operation>
+      <operation name="buscar" qname="operNS:buscar" xmlns:operNS="http://bo.fiap.com.br" returnQName="retNS:buscarReturn" xmlns:retNS="http://bo.fiap.com.br" returnType="rtns:Perfume" xmlns:rtns="http://entity.fiap.com.br" soapAction="" >
+        <parameter qname="pns:codigo" xmlns:pns="http://bo.fiap.com.br" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="cadastrar" qname="operNS:cadastrar" xmlns:operNS="http://bo.fiap.com.br" soapAction="" >
+        <parameter qname="pns:perfume" xmlns:pns="http://bo.fiap.com.br" type="tns:Perfume" xmlns:tns="http://entity.fiap.com.br"/>
+        <fault name="DBException" qname="fns:fault" xmlns:fns="http://bo.fiap.com.br" class="br.com.fiap.exception.DBException" type="tns:DBException" xmlns:tns="http://exception.fiap.com.br"/>
+      </operation>
+      <parameter name="allowedMethods" value="buscar listar cadastrar"/>
+
+      <typeMapping
+        xmlns:ns="http://bo.fiap.com.br"
+        qname="ns:>cadastrarResponse"
+        type="java:br.com.fiap.bo.CadastrarResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://bo.fiap.com.br"
+        qname="ns:>listarResponse"
+        type="java:br.com.fiap.bo.ListarResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://bo.fiap.com.br"
+        qname="ns:>buscar"
+        type="java:br.com.fiap.bo.Buscar"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://bo.fiap.com.br"
+        qname="ns:>cadastrar"
+        type="java:br.com.fiap.bo.Cadastrar"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://exception.fiap.com.br"
+        qname="ns:DBException"
+        type="java:br.com.fiap.exception.DBException"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://bo.fiap.com.br"
+        qname="ns:>buscarResponse"
+        type="java:br.com.fiap.bo.BuscarResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://bo.fiap.com.br"
+        qname="ns:>listar"
+        type="java:br.com.fiap.bo.Listar"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://entity.fiap.com.br"
+        qname="ns:Perfume"
+        type="java:br.com.fiap.entity.Perfume"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://bo.fiap.com.br"
+        qname="ns:ArrayOf_xsd_anyType"
+        type="java:java.lang.Object[]"
+        innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+        encodingStyle=""
+      />
+  </service>
+</deployment>
